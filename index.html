@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Leave a Review</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; text-align: center; }
+    .star-rating { direction: rtl; display: inline-block; font-size: 30px; }
+    .star-rating input { display: none; }
+    .star-rating label { color: #ddd; cursor: pointer; }
+    .star-rating input:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label { color: #f5b301; }
+    textarea { width: 100%; max-width: 400px; margin-top: 10px; display: none; }
+    button { display: none; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Rate Your Experience</h2>
+  <form id="reviewForm">
+    <div class="star-rating">
+      <input type="radio" id="star5" name="rating" value="5">
+      <label for="star5">&#9733;</label>
+      <input type="radio" id="star4" name="rating" value="4">
+      <label for="star4">&#9733;</label>
+      <input type="radio" id="star3" name="rating" value="3">
+      <label for="star3">&#9733;</label>
+      <input type="radio" id="star2" name="rating" value="2">
+      <label for="star2">&#9733;</label>
+      <input type="radio" id="star1" name="rating" value="1">
+      <label for="star1">&#9733;</label>
+    </div>
+    <br><br>
+    <textarea id="feedbackText" placeholder="Leave your feedback (only if rating is below 4)" rows="4"></textarea>
+    <br><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.querySelectorAll('input[name="rating"]').forEach((radio) => {
+      radio.addEventListener('change', function() {
+        var rating = this.value;
+        if (rating >= 4) {
+          // Auto-redirect 4 & 5-star users to Google Maps review page
+          window.location.href = "https://search.google.com/local/writereview?placeid=ChIJORZ81C31qjsR2tNU6lXu8dg&source=g.page.m.nr._&laa=nmx-review-solicitation-recommendation-card";
+        } else {
+          // Show feedback textarea and submit button for ratings below 4
+          document.getElementById('feedbackText').style.display = "block";
+          document.querySelector('button').style.display = "block";
+        }
+      });
+    });
+
+    document.getElementById('reviewForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var feedback = document.getElementById('feedbackText').value;
+      var phoneNumber = "919976869564"; // WhatsApp number without +
+      var message = encodeURIComponent("Customer Feedback:\nRating: Less than 4\nMessage: " + feedback);
+      var whatsappUrl = "https://wa.me/" + phoneNumber + "?text=" + message;
+      window.location.href = whatsappUrl;
+    });
+  </script>
+</body>
+</html>
